@@ -1687,32 +1687,15 @@ header .nav-icon ul .cart-icon {
     right: 40px; }
 
 .slider-bg {
+margin-bottom: 10%;
   position: relative;
-  background: url(../images/main-banner-bg.jpg) no-repeat;
   width: 100%;
-  -webkit-box-shadow: inset 0px -3px 6px 0px #ddd;
-          box-shadow: inset 0px -3px 6px 0px #ddd;
   vertical-align: middle;
   height: 65vh;
   background-size: cover !important;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-  .slider-bg.slider-bg-2 {
-    background: url(../images/main-banner-bg2.jpg) no-repeat; }
-  .slider-bg .home-slider .home {
-    height: 50vh;
-    padding: 0 100px; }
-    .slider-bg .home-slider .home .slider-contain {
-      height: 50vh; }
-  .slider-bg:after {
-    content: "";
-    position: absolute;
-    height: 11px;
-    background: url(../images/shadow.png) no-repeat scroll center 0 transparent;
     top: 0;
     width: 100%; }
 
@@ -16896,3 +16879,7 @@ body.dark {
     padding: 7px 15px; }
   .rtl .vertical-tab .tab-head {
     padding: 0 38px 0 20px; } }
+
+.detalle-producto {
+   margin-top: 4%;
+}

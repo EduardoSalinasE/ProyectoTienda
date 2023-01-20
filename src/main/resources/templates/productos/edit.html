@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>TECH HAVEN</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -15,6 +15,9 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/reset.min.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/header-14.css}" />
 
 </head>
 
@@ -32,13 +35,11 @@
       <h1 class="mt-4 mb-3">
         Spring eCommerce <small>Productos</small>
       </h1>
-
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item active">Actualizar Producto</li>
-      </ol>
-
+      <br>
+      <br>
       <h2>Actualizar Producto</h2>
+      <br>
+      <br>
       <form class="form-horizontal" th:action="@{/productos/update}" method="post"  enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="${producto.id}">    
         
@@ -86,6 +87,8 @@
       </form>
 
     </div>
+    <br>
+    <br>
     <!-- /.container -->
 
     <!-- Footer -->
