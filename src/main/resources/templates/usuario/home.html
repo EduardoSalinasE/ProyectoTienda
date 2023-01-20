@@ -16,12 +16,35 @@
 <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}"
 	rel="stylesheet">
 
+	<link th:href="@{'https://fonts.googleapis.com/css?family=Lato:300,400,700,900'}" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" th:href="@{css/fontawesome.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/animate.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/themify-icons.css}">
+	<link rel="stylesheet" type="text/css" id="color" th:href="@{css/color1.css}">
+
+
 <!-- Custom styles for this template -->
 <link th:href="@{css/heroic-features.css}" rel="stylesheet">
 
 </head>
 
+<div class="loader-wrapper">
+	<div class="loading-text">
+		<span class="loading-text-words">L</span>
+		<span class="loading-text-words">O</span>
+		<span class="loading-text-words">A</span>
+		<span class="loading-text-words">D</span>
+		<span class="loading-text-words">I</span>
+		<span class="loading-text-words">N</span>
+		<span class="loading-text-words">G</span>
+	</div>
+</div>
+
 <body>
+
+	<!-- Header -->
+
 
 	<!-- Navigation -->
 	<div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}">	
@@ -33,10 +56,54 @@
 	<div class="container">
 
 		<!-- Jumbotron Header -->
-		<header class="jumbotron my-4">
-			<h1 class="display-3">Bienvenido a Tu tienda de productos en Línea</h1>
-
-		</header>
+		<div class="slider-bg slider-bg-2 ">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 slider-part">
+						<div class="slide-1 home-slider">
+							<div>
+								<div class="home text-start p-left">
+									<img th:src="@{images/home-banner/7.jpg}" class="bg-img " alt="">
+									<div class="container">
+										<div class="row">
+											<div class="col">
+												<div class="slider-contain">
+													<div>
+														<h5>sony bravia</h5>
+														<h1>LED TV</h1>
+														<h4>save up to 50%</h4>
+														<a href="#" class="btn btn-solid">shop now</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div class="home text-start p-left">
+									<img th:src="@{images/home-banner/8.jpg}" class="bg-img " alt="">
+									<div class="container">
+										<div class="row">
+											<div class="col">
+												<div class="slider-contain">
+													<div>
+														<h5>nest</h5>
+														<h1>device</h1>
+														<h4>save up to 50%</h4>
+														<a href="#" class="btn btn-solid">shop now</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!-- Page Features -->
 		<div class="row text-center">
@@ -68,6 +135,13 @@
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
 	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- Scripts pagina -->
+	<script th:src="@{js/menu.js}"></script>
+	<script  th:src="@{js/slick.js}"></script>
+	<script th:src="@{js/timer.js}" ></script>
+	<script th:src="@{js/script.js}" ></script>
+	<script th:src="@{js/modal.js}" ></script>
 
 </body>
 

@@ -16,6 +16,13 @@
 <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}"
 	rel="stylesheet">
 
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" th:href="@{css/fontawesome.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/animate.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{css/themify-icons.css}">
+	<link rel="stylesheet" type="text/css" id="color" th:href="@{css/color1.css}">
+
 <!-- Custom styles for this template -->
 <link th:href="@{css/heroic-features.css}" rel="stylesheet">
 
@@ -23,7 +30,88 @@
 
 <body>
 
+	<!-- Header -->
+	<!-- <div class="header-1">
+		<div class="mobile-fix-header">
+		</div>
+		<div class="container">
+
+			<div class="row header-content">
+				<div class="col-12">
+					<div class="header-section">
+
+						<div class="brand-logo">
+							<a th:href="@{/}"> <img th:src="@{/images/icon/logo.png}" class="" alt=""></a>
+						</div>
+						<div class="search-bar">
+							<input class="search__input" type="text" placeholder="Search a product">
+							<div class="search-icon "></div>
+						</div>
+						<div class="nav-icon">
+							<ul>
+								<li class="onhover-div search-3">
+									<div onclick="openSearch()">
+										<i class="ti-search mobile-icon-search" ></i>
+										<img th:src="@{/images/icon/l-1/search.png}" class=" img-fluid search-img" alt="">
+									</div>
+									<div id="search-overlay" class="search-overlay">
+										<div>
+											<span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+											<div class="overlay-content">
+												<div class="container">
+													<div class="row">
+														<div class="col-xl-12">
+															<form>
+																<div class="form-group">
+																	<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
+																</div>
+																<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="onhover-div wishlist-icon" onclick="openWishlist()">
+									<img th:src="@{/images/icon/l-1/wishlist.png}" alt=""  class="wishlist-img">
+									<i class="ti-heart mobile-icon"></i>
+									<div class="wishlist icon-detail">
+										<h6 class="up-cls"><span>0 item</span></h6>
+										<h6><a href="#">wish list</a></h6>
+									</div>
+								</li>
+								<li class="onhover-div user-icon" onclick="openAccount()">
+									<img th:src="@{/images/icon/l-1/user.png}" alt="" class="user-img">
+									<i class="ti-user mobile-icon"></i>
+									<div class="wishlist icon-detail">
+										<h6 class="up-cls"><span>my account</span></h6>
+										<h6><a href="#">login/sign up</a></h6>
+									</div>
+								</li>
+								<li class="onhover-div cart-icon" onclick="openCart()">
+									<img th:src="@{/images/icon/l-1/shopping-cart.png}" alt="" class="cart-image">
+									<i class="ti-shopping-cart mobile-icon"></i>
+									<div class="cart  icon-detail">
+										<h6 class="up-cls"><span>3 item</span></h6>
+										<h6><a href="#">my cart</a></h6>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	-->
+
+
 	<!-- Navigation -->
+
 	<div th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<div class="container">
@@ -111,6 +199,13 @@
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
 	<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- Scripts pagina -->
+	<script th:src="@{js/menu.js}"></script>
+	<script  th:src="@{js/slick.js}"></script>
+	<script th:src="@{js/timer.js}" ></script>
+	<script th:src="@{js/script.js}" ></script>
+	<script th:src="@{js/modal.js}" ></script>
 
 </body>
 
