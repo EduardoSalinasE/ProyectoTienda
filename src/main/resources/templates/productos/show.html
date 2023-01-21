@@ -26,7 +26,14 @@
 
   <!-- Navigation -->
    <div th:include="administrador/template_admin.html::header" ></div>
-
+  <br>
+  <br>
+  <div class="container">
+    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         th:text="${mensaje}"
+         class="alert">
+    </div>
+  </div>
 <!-- Page Content -->
 <div class="container">
 

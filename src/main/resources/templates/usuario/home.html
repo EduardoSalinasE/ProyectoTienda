@@ -56,6 +56,15 @@
 	</div>
 	
 	<div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"> </div>
+	<br>
+	<br>
+
+	<div class="container">
+		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+			 th:text="${mensaje}"
+			 class="alert">
+		</div>
+	</div>
 
 	<div class="slider-bg slider-bg-2 ">
 		<div class="container">
@@ -141,6 +150,8 @@
 				</div>
 			</div>
 		</section>
+
+
 
 
 

@@ -13,9 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -137,20 +140,37 @@ public class HomeController {
     }
 
     @GetMapping("/order")
-    public String order(Model model, HttpSession session) {
+    public String order(Model model, HttpSession session, RedirectAttributes redirectAttributes, Usuario usuario) {
 
-        Usuario usuario =usuarioService.findById( Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 
-        model.addAttribute("cart", detalles);
-        model.addAttribute("orden", orden);
-        model.addAttribute("usuario", usuario);
 
-        return "usuario/resumenorden";
+        if (session.getAttribute("idusuario") == null){
+            redirectAttributes.addFlashAttribute("mensaje", "Error: Tiene que loguearse para hacer compras")
+                    .addFlashAttribute("clase", "success");
+            return "redirect:/usuario/login";
+        }
+        else {
+
+            usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+
+            model.addAttribute("cart", detalles);
+            model.addAttribute("orden", orden);
+            model.addAttribute("usuario", usuario);
+
+            if (detalles.isEmpty()) {
+                redirectAttributes.addFlashAttribute("mensaje", "Error: No se encuentra el producto")
+                        .addFlashAttribute("clase", "success");
+                return "redirect:/getCart";
+            } else {
+                return "usuario/resumenorden";
+            }
+        }
+
     }
 
     // guardar la orden
     @GetMapping("/saveOrder")
-    public String saveOrder(HttpSession session ) {
+    public String saveOrder(HttpSession session, RedirectAttributes redirectAttributes) {
         Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generarNumeroOrden());
@@ -161,17 +181,23 @@ public class HomeController {
         orden.setUsuario(usuario);
         ordenService.save(orden);
 
-        //guardar detalles
-        for (DetalleOrden dt:detalles) {
-            dt.setOrden(orden);
-            detalleOrdenService.save(dt);
-        }
 
-        ///limpiar lista y orden
-        orden = new Orden();
-        detalles.clear();
+            //guardar detalles
+            for (DetalleOrden dt:detalles) {
+                dt.setOrden(orden);
+                detalleOrdenService.save(dt);
+            }
 
-        return "redirect:/";
+            ///limpiar lista y orden
+            orden = new Orden();
+            detalles.clear();
+
+        redirectAttributes.addFlashAttribute("mensaje", "Se hizo la compra exitosamente!")
+                .addFlashAttribute("clase", "success");
+
+            return "redirect:/";
+
+
     }
 
     @PostMapping("/search")

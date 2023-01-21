@@ -32,6 +32,15 @@
 	</div>
 	
 	<div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"> </div>
+	<br>
+	<br>
+	<div class="container">
+		<div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+			 th:text="${mensaje}"
+			 class="alert">
+		</div>
+	</div>
+
 
 	<!-- Page Content -->
 	<div class="container">
@@ -39,6 +48,8 @@
 		<h1 class="mt-4 mb-3">
 			TECH HAVEN <small>Carrito</small>
 		</h1>
+
+
 
 
 		<!-- Blog Post -->
@@ -74,6 +85,12 @@
 						<ul class="list-group">
 							<li class="list-group-item"><h5 th:text="${orden.total}"></h5></li>
 							<a th:href="@{/order}" class="btn btn-dark">Ver Orden</a>
+						</ul>
+
+						<br>
+						<br>
+						<ul class="list-group">
+							<a th:href="@{/}" class="btn btn-dark">Seguir Comprando</a>
 						</ul>
 					</div>
 

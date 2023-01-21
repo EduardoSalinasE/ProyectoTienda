@@ -26,8 +26,10 @@
 
 <body>
 
-  <!-- Navigation -->
- <div th:include="usuario/template_usuario.html::header"></div>
+<div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}">
+</div>
+
+<div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"> </div>
 
     <!-- Page Content -->
     <div class="container">
@@ -87,6 +89,16 @@
             <li class="list-group-item"><h5 th:text=" 'Total: '+ ${orden.total} "> </h5></li>
             <a th:href="@{saveOrder}" class="btn btn-dark">Generar Orden</a>
           </ul>
+             <br>
+             <br>
+             <br>
+             <br>
+             <ul class="list-group">
+                 <a th:href="@{/}" class="btn btn-dark">Seguir Comprando</a>
+             </ul>
+             <br>
+             <br>
+
         </div>
       </div>
     </div>

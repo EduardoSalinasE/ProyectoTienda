@@ -98,6 +98,13 @@
       </div>
     </div>
   </nav>
+  <br>
+  <div class="container">
+    <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
+         th:text="${mensaje}"
+         class="alert">
+    </div>
+  </div>
 
   <section class="ftco-section">
     <div class="container">

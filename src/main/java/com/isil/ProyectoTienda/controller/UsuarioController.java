@@ -2,6 +2,7 @@ package com.isil.ProyectoTienda.controller;
 
 import com.isil.ProyectoTienda.model.Orden;
 import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.service.EmailService;
 import com.isil.ProyectoTienda.service.OrdenService;
 import com.isil.ProyectoTienda.service.UsuarioService;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -25,6 +27,9 @@ public class UsuarioController {
 
     private final Logger logger= LoggerFactory.getLogger(UsuarioController.class);
 
+
+    private final EmailService emailService;
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -32,6 +37,10 @@ public class UsuarioController {
     private OrdenService ordenService;
 
     BCryptPasswordEncoder passEncode= new BCryptPasswordEncoder();
+
+    public UsuarioController(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
 
     // /usuario/registro
@@ -41,12 +50,15 @@ public class UsuarioController {
     }
 
     @PostMapping("/save")
-    public String save(Usuario usuario) {
+    public String save(Usuario usuario, RedirectAttributes redirectAttributes) {
         logger.info("Usuario registro: {}", usuario);
         usuario.setTipo("USER");
         usuario.setPassword( passEncode.encode(usuario.getPassword()));
+        this.emailService.sendListEmail(usuario.getEmail());
         usuarioService.save(usuario);
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("mensaje", "Se ha registrado exitosamente!")
+                .addFlashAttribute("clase", "success");
+        return "redirect:/usuario/login";
     }
 
     @GetMapping("/login")

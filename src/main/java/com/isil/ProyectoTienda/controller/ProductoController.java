@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class ProductoController {
     }
 
     @PostMapping("/save")
-    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
+    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
         LOGGER.info("Este es el objeto producto {}",producto);
 
 
@@ -61,6 +62,8 @@ public class ProductoController {
         }
 
         productoService.save(producto);
+        redirectAttributes.addFlashAttribute("mensaje", "Se añadio el nuevo producto!")
+                .addFlashAttribute("clase", "success");
         return "redirect:/productos";
     }
 
@@ -77,7 +80,7 @@ public class ProductoController {
     }
 
     @PostMapping("/update")
-    public String update(Producto producto, @RequestParam("img") MultipartFile file ) throws IOException {
+    public String update(Producto producto, @RequestParam("img") MultipartFile file, RedirectAttributes redirectAttributes ) throws IOException {
         Producto p= new Producto();
         p=productoService.get(producto.getId()).get();
 
@@ -94,11 +97,13 @@ public class ProductoController {
         }
         producto.setUsuario(p.getUsuario());
         productoService.update(producto);
+        redirectAttributes.addFlashAttribute("mensaje", "Se hizo la actualización del producto!")
+                .addFlashAttribute("clase", "success");
         return "redirect:/productos";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
 
         Producto p = new Producto();
         p=productoService.get(id).get();
@@ -109,6 +114,8 @@ public class ProductoController {
         }
 
         productoService.delete(id);
+        redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el producto!")
+                .addFlashAttribute("clase", "success");
         return "redirect:/productos";
     }
 
