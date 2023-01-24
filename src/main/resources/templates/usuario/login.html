@@ -54,8 +54,6 @@
             </button>
             <ul class="nav__wrapper">
               <li class="nav__item"><a th:href="@{/}">Home</a></li>
-              <li class="nav__item"><a href="#">About</a></li>
-              <li class="nav__item"><a href="#">Services</a></li>
             </ul>
           </nav>
         </div>
@@ -99,6 +97,7 @@
     </div>
   </nav>
   <br>
+
   <div class="container">
     <div th:classappend="'alert-' + (${clase != null} ? ${clase} : info)" th:if="${mensaje != null}"
          th:text="${mensaje}"
@@ -135,6 +134,7 @@
                   <button type="submit" class="btn btn-dark"> <span class="glyphicon glyphicon-ok"></span> Ingresar</button>
                 </div>
 
+
               </form>
             </div>
           </div>
@@ -152,6 +152,8 @@
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 	<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+ </script>
 
 </body>
 

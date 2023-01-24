@@ -67,7 +67,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/acceder")
-    public String acceder(Usuario usuario, HttpSession session) {
+    public String acceder(Usuario usuario, HttpSession session, RedirectAttributes redirectAttributes) {
         logger.info("Accesos : {}", usuario);
 
         Optional<Usuario> user=usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString()));

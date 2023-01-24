@@ -143,7 +143,6 @@ public class HomeController {
     public String order(Model model, HttpSession session, RedirectAttributes redirectAttributes, Usuario usuario) {
 
 
-
         if (session.getAttribute("idusuario") == null){
             redirectAttributes.addFlashAttribute("mensaje", "Error: Tiene que loguearse para hacer compras")
                     .addFlashAttribute("clase", "success");

@@ -503,6 +503,11 @@ section, .section-t-space {
               filter: blur(0px);
       -webkit-animation: blur-text 1.5s 1.2s infinite linear alternate;
               animation: blur-text 1.5s 1.2s infinite linear alternate; }
+              .loading-text span:nth-child(8) {
+                    -webkit-filter: blur(0px);
+                            filter: blur(0px);
+                    -webkit-animation: blur-text 1.5s 1.2s infinite linear alternate;
+                            animation: blur-text 1.5s 1.2s infinite linear alternate; }
 
 @-webkit-keyframes blur-text {
   0% {
