@@ -13,18 +13,17 @@ public class Proveedor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
+    private String razsoc;
     private String boleta;
     private double precio;
     private int cantidad;
 
-    @ManyToOne
-    private Producto producto;
 
     @ManyToOne
     private Usuario usuario;
 
     @Override
     public String toString() {
-        return "Proveedor [id=" + id + ", nombre=" + nombre + ", boleta=" + boleta + ", precio=" + precio + ", cantidad=" + cantidad + "]";
+        return "Proveedor [id=" + id + ", nombre=" + nombre + ", razsoc="+ razsoc +",boleta=" + boleta + ", precio=" + precio + ", cantidad=" + cantidad + "]";
     }
 }

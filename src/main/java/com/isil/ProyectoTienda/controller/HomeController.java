@@ -68,6 +68,7 @@ public class HomeController {
         return "usuario/productohome";
     }
 
+
     @PostMapping("/cart")
     public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
         DetalleOrden detalleOrden = new DetalleOrden();
@@ -101,6 +102,50 @@ public class HomeController {
 
         return "usuario/carrito";
     }
+
+    // adición al carrito de forma directa desde le home
+    @GetMapping("/cartFlash/{id}")
+    public String addCartFlah(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+
+        Integer cantidad = 1;
+
+        DetalleOrden detalleOrden = new DetalleOrden();
+        Producto producto = new Producto();
+        double sumaTotal = 0;
+
+        Optional<Producto> optionalProducto = productoService.get(id);
+        log.info("Producto añadido: {}", optionalProducto.get());
+
+        producto = optionalProducto.get();
+
+
+        detalleOrden.setCantidad(cantidad);
+        detalleOrden.setPrecio(producto.getPrecio());
+        detalleOrden.setNombre(producto.getNombre());
+        detalleOrden.setTotal(producto.getPrecio() * cantidad);
+        detalleOrden.setProducto(producto);
+
+        //validar que le producto no se añada 2 veces
+        Integer idProducto=producto.getId();
+        boolean ingresado=detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
+
+        if (!ingresado) {
+            detalles.add(detalleOrden);
+        }
+
+        sumaTotal = detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
+
+        orden.setTotal(sumaTotal);
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden", orden);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Se añadió " + producto.getNombre() + " al carrito!")
+                .addFlashAttribute("clase", "success");
+
+        return "redirect:/";
+    }
+
+
 
     // quitar un producto del carrito
     @GetMapping("/delete/cart/{id}")
@@ -167,6 +212,8 @@ public class HomeController {
 
     }
 
+
+
     // guardar la orden
     @GetMapping("/saveOrder")
     public String saveOrder(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -199,12 +246,6 @@ public class HomeController {
 
     }
 
-    @PostMapping("/search")
-    public String searchProduct(@RequestParam String nombre, Model model) {
-        log.info("Nombre del producto: {}", nombre);
-        List<Producto> productos= productoService.findAll().stream().filter( p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
-        model.addAttribute("productos", productos);
-        return "usuario/home";
-    }
+
 
 }

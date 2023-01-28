@@ -12,4 +12,7 @@ public interface ProveedorService {
     public void update(Proveedor proveedor);
     public void delete(Integer id);
     public List<Proveedor> findAll();
+
+
+
 }

@@ -21,6 +21,8 @@ public class Usuario {
     private String tipo;
     private String password;
 
+    private boolean isEneable;
+
     @OneToMany(mappedBy = "usuario")
     private List<Producto> productos;
 

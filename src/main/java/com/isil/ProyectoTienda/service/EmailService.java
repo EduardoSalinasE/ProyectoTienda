@@ -27,7 +27,7 @@ public class EmailService {
             helper.setFrom(email);
             helper.setTo(emailTo);
             helper.setSubject("Registro");
-            helper.setText("Gracias por registrarse!!!");
+            helper.setText("Click aqui para terminar su registro: " + "http://localhost:8080/usuario/confirmacion");
             javaMailSender.send(message);
 
         } catch (Exception e) {

@@ -34,18 +34,6 @@
 
 </head>
 
-<div class="loader-wrapper">
-	<div class="loading-text">
-		<span class="loading-text-words">C</span>
-		<span class="loading-text-words">A</span>
-		<span class="loading-text-words">R</span>
-		<span class="loading-text-words">G</span>
-		<span class="loading-text-words">A</span>
-		<span class="loading-text-words">N</span>
-		<span class="loading-text-words">D</span>
-		<span class="loading-text-words">O</span>
-	</div>
-</div>
 
 <body>
 
@@ -141,6 +129,14 @@
 												<a th:href="@{/productohome/{id}  (id=${producto.id})  }" class="btn btn-success">Ver
 													producto</a>
 											</div>
+											<div class="detalle-producto">
+												Cantidad: <input type="number" id="cantidad" name="cantidad"
+																 autocomplete="off" min="1" max="5" value="1">
+											</div>
+											<div class="detalle-producto">
+												<a th:href="@{/cartFlash/{id}  (id=${producto.id})}" class="btn btn-success">Agregar Carrito</a>
+											</div>
+
 										</div>
 
 									</div>

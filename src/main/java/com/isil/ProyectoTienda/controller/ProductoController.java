@@ -3,8 +3,11 @@ package com.isil.ProyectoTienda.controller;
 
 
 import com.isil.ProyectoTienda.model.Producto;
+import com.isil.ProyectoTienda.model.Proveedor;
 import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.repository.ProveedorRepository;
 import com.isil.ProyectoTienda.service.ProductoService;
+import com.isil.ProyectoTienda.service.ProveedorService;
 import com.isil.ProyectoTienda.service.UploadFileService;
 import com.isil.ProyectoTienda.service.UsuarioService;
 import org.slf4j.Logger;
@@ -18,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/productos")
@@ -31,8 +34,14 @@ public class ProductoController {
     @Autowired
     private UsuarioService usuarioService;
 
+
+    @Autowired
+    private ProveedorService proveedorService;
+
     @Autowired
     private UploadFileService upload;
+    @Autowired
+    private ProveedorRepository proveedorRepository;
 
     @GetMapping("")
     public String show(Model model) {
@@ -41,7 +50,10 @@ public class ProductoController {
     }
 
     @GetMapping("/create")
-    public String create() {
+    public String create(Model model) {
+
+        model.addAttribute("proveedores", proveedorService.findAll());
+
         return "productos/create";
     }
 
@@ -51,7 +63,9 @@ public class ProductoController {
 
 
         Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
+        producto.setProveedor(producto.getProveedor());
         producto.setUsuario(u);
+
 
         //imagen
         if (producto.getId()==null) { // cuando se crea un producto
@@ -118,5 +132,6 @@ public class ProductoController {
                 .addFlashAttribute("clase", "success");
         return "redirect:/productos";
     }
+
 
 }

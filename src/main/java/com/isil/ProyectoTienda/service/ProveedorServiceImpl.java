@@ -38,4 +38,6 @@ public class ProveedorServiceImpl implements ProveedorService {
     public List<Proveedor> findAll() {
         return proveedorRepository.findAll();
     }
+
+
 }

@@ -37,7 +37,7 @@
       </h1>
       <br>
       <br>
-      <h2>Actualizar Producto</h2>
+      <h2>Actualizar Boletas</h2>
       <br>
       <br>
       <form class="form-horizontal" th:action="@{/proveedor/update}" method="post"  enctype="multipart/form-data">
@@ -51,11 +51,17 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-sm-2" for="boleta">Boleta del Proveedor:</label>
+          <label class="control-label col-sm-2" for="boleta">Numero de Boleta:</label>
           <div class="col-sm-10">          
-            <input type="text" class="form-control" id="boleta" name="boleta" placeholder="Ingrese la la boleta del producto" required autocomplete="off" th:text="${proveedor.boleta}"> </input>
+            <input type="text" class="form-control" id="boleta" name="boleta" placeholder="Ingrese la boleta del producto" required autocomplete="off" th:value="${proveedor.boleta}">
           </div>
         </div>
+          <div class="form-group">
+              <label class="control-label col-sm-2" for="razsoc">Razon Social:</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" id="razsoc" name="razsoc" placeholder="Ingrese la Razon Social del Proveedor" required autocomplete="off" th:value="${proveedor.razsoc}">
+              </div>
+          </div>
 
         <div class="form-group">
           <label class="control-label col-sm-2" for="precio">Precio:</label>

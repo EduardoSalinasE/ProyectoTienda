@@ -17,9 +17,11 @@ public class Producto {
     private String imagen;
     private double precio;
     private int cantidad;
-
     @ManyToOne
     private Usuario usuario;
+
+    @ManyToOne
+    private Proveedor proveedor;
 
     @Override
     public String toString() {
