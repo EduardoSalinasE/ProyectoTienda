@@ -45,7 +45,7 @@
 
 
 
-  <a class="btn btn-primary" th:href="@{/proveedor/create}" > Añadir Producto</a>
+  <a class="btn btn-primary" th:href="@{/proveedor/create}" > Añadir Proveedor</a>
   <br>
   <br>
   <h2>Compras</h2>
@@ -55,10 +55,8 @@
     <thead>
       <tr>
         <th scope="col">Nombre</th>
-        <th scope="col">N. Boleta</th>
-        <th scope="col">Razon Social</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Cantidad</th>
+        <th scope="col">ruc</th>
+        <th scope="col">direccion</th>
         <th scope="col">Acción</th>
         <th scope="col">Acción</th>
       </tr>
@@ -66,10 +64,9 @@
     <tbody>
       <tr th:each="proveedor:${proveedor}">
         <td th:text="${proveedor.nombre}"></td>
-        <td th:text="${proveedor.boleta}"></td>
-        <td th:text="${proveedor.razsoc}"></td>
-        <td th:text="${proveedor.precio}"></td>
-        <td th:text="${proveedor.cantidad}"></td>
+        <td th:text="${proveedor.ruc}"></td>
+        <td th:text="${proveedor.direccion}"></td>
+        <td><a  class="btn btn-primary" th:href="@{proveedor/productos/{id} (id=${proveedor.id})}">Añadir Productos</a></td>
         <td><a  class="btn btn-warning" th:href="@{proveedor/edit/{id} (id=${proveedor.id}) }">Editar</a> </td>
         <td><a  class="btn btn-danger" th:href="@{proveedor/delete/{id} (id=${proveedor.id}) }">Eliminar</a> </td>
       </tr>       

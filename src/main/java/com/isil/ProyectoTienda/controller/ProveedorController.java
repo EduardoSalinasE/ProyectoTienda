@@ -1,7 +1,12 @@
 package com.isil.ProyectoTienda.controller;
 
+import com.isil.ProyectoTienda.model.DetalleBoletas;
+import com.isil.ProyectoTienda.model.DetalleComprasProv;
 import com.isil.ProyectoTienda.model.Proveedor;
 import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.repository.DetalleBoletasRepository;
+import com.isil.ProyectoTienda.service.DetalleBoletasService;
+import com.isil.ProyectoTienda.service.DetalleComprasProvService;
 import com.isil.ProyectoTienda.service.ProveedorService;
 import com.isil.ProyectoTienda.service.UsuarioService;
 import org.slf4j.Logger;
@@ -14,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +34,17 @@ public class ProveedorController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private DetalleBoletasService detalleBoletasService;
+
+
+
+    List<DetalleBoletas> detalleBol = new ArrayList<DetalleBoletas>();
+
+    DetalleComprasProv detalleComprasProv = new DetalleComprasProv();
+    @Autowired
+    private DetalleBoletasRepository detalleBoletasRepository;
 
     @GetMapping("")
     public String show(Model model) {
@@ -47,7 +65,7 @@ public class ProveedorController {
         proveedor.setUsuario(usuario);
 
         proveedorService.save(proveedor);
-        redirectAttributes.addFlashAttribute("mensaje", "Se añadio nueva compra dle proveedor!")
+        redirectAttributes.addFlashAttribute("mensaje", "Se añadió nueva compra del proveedor!")
                 .addFlashAttribute("clase", "success");
         return "redirect:/proveedor";
     }
@@ -87,6 +105,47 @@ public class ProveedorController {
         return "redirect:/proveedor";
     }
 
+    @GetMapping("/productos/{id}")
+    public String productos(@PathVariable Integer id, Model model)
+    {
+        Proveedor proveedor = new Proveedor();
+        Optional<Proveedor> proveedorOptional = proveedorService.get(id);
+        proveedor = proveedorOptional.get();
+
+        model.addAttribute("proveedor", proveedor);
+        model.addAttribute("listaBoletas", detalleBoletasService.findAllByProveedor_id(id));
+
+        return "proveedor/boleta";
+
+    }
+
+    @PostMapping("/crearBoleta")
+    public String addBoleta( @RequestParam Integer id, @RequestParam Integer cantidad, @RequestParam String nombreProducto, @RequestParam Integer total  ,RedirectAttributes redirectAttributes)
+    {
+        DetalleBoletas detalleBoletas = new DetalleBoletas();
+        Proveedor proveedor = new Proveedor();
+
+        Optional<Proveedor> optionalProveedor = proveedorService.get(id);
+        proveedor = optionalProveedor.get();
+
+        detalleBoletas.setCantidad(cantidad);
+        detalleBoletas.setNombreProducto(nombreProducto);
+        detalleBoletas.setTotal(total);
+        detalleBoletas.setProveedor(proveedor);
+
+        double sumaTotal = 0;
+        sumaTotal = detalleBol.stream().mapToDouble(dt -> dt.getTotal()).sum();
+
+        detalleComprasProv.setPrecio(sumaTotal);
+        detalleBoletasRepository.save(detalleBoletas);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Producto añadido!")
+                .addFlashAttribute("clase", "success");
+
+
+        return "redirect:/proveedor/productos/" + id;
+
+    }
 
 
 }

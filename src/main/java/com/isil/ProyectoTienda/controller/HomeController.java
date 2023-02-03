@@ -103,11 +103,11 @@ public class HomeController {
         return "usuario/carrito";
     }
 
+
+
     // adición al carrito de forma directa desde le home
     @GetMapping("/cartFlash/{id}")
-    public String addCartFlah(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
-
-        Integer cantidad = 1;
+    public String addCartFlah(@PathVariable Integer id, @RequestParam Integer cantidad, Model model, RedirectAttributes redirectAttributes) {
 
         DetalleOrden detalleOrden = new DetalleOrden();
         Producto producto = new Producto();
