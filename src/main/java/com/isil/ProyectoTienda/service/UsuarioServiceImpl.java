@@ -1,6 +1,7 @@
 package com.isil.ProyectoTienda.service;
 
 import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.repository.ProductoRepository;
 import com.isil.ProyectoTienda.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
 
     @Override
     public Optional<Usuario> findById(Integer id) {
@@ -27,6 +29,16 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Override
     public Optional<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    @Override
+    public void update(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public Usuario findByToken(String token) {
+        return usuarioRepository.findByToken(token);
     }
 
     @Override

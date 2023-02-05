@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 @RequestMapping("/usuario")
@@ -40,6 +41,9 @@ public class UsuarioController {
     @Autowired
     private OrdenService ordenService;
 
+
+    private Usuario usuario;
+
     BCryptPasswordEncoder passEncode= new BCryptPasswordEncoder();
     private final UsuarioRepository usuarioRepository;
 
@@ -47,6 +51,24 @@ public class UsuarioController {
                              UsuarioRepository usuarioRepository) {
         this.emailService = emailService;
         this.usuarioRepository = usuarioRepository;
+    }
+
+    public static int numeroAleatorioEnRango(int minimo, int maximo) {
+        // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+    }
+
+    public static String cadenaAleatoria(int longitud) {
+        // El banco de caracteres
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        // La cadena en donde iremos agregando un carácter aleatorio
+        String cadena = "";
+        for (int x = 0; x < longitud; x++) {
+            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            cadena += caracterAleatorio;
+        }
+        return cadena;
     }
 
 
@@ -62,8 +84,9 @@ public class UsuarioController {
 
         logger.info("Usuario registro: {}", usuario);
         usuario.setTipo("USER");
+        usuario.setToken(cadenaAleatoria(20));
         usuario.setPassword( passEncode.encode(usuario.getPassword()));
-        this.emailService.sendListEmail(usuario.getEmail());
+        this.emailService.sendListEmail(usuario.getEmail(), usuario.getToken());
         usuarioService.save(usuario);
         redirectAttributes.addFlashAttribute("mensaje", "revise su correo para terminar registro!")
                 .addFlashAttribute("clase", "success");
@@ -71,10 +94,20 @@ public class UsuarioController {
 
     }
 
-    @GetMapping("/confirmacion")
-    public String confirmation()
+    @GetMapping("/confirmacion/{token}")
+    public String confirmation(@PathVariable String token)
     {
-        return "usuario/paginaConfirmacion";
+        Usuario usuarioToken = usuarioService.findByToken(token);
+        if (usuarioToken.getToken().equals(token))
+        {
+            usuarioToken.setEneable(1);
+            usuarioService.update(usuarioToken);
+            return "usuario/paginaConfirmacion";
+        }else {
+            return "usuario/login";
+        }
+
+
     }
 
     @GetMapping("/login")
@@ -88,17 +121,26 @@ public class UsuarioController {
 
         Optional<Usuario> user=usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString()));
 
-        if (user.isPresent()) {
-            session.setAttribute("idusuario", user.get().getId());
+        if (user.get().getEneable() == 1){
+            if (user.isPresent()) {
+                session.setAttribute("idusuario", user.get().getId());
 
-            if (user.get().getTipo().equals("ADMIN")) {
-                return "redirect:/administrador";
+                if (user.get().getTipo().equals("ADMIN")) {
+                    return "redirect:/administrador";
+                }else {
+                    return "redirect:/";
+                }
             }else {
-                return "redirect:/";
+                logger.info("Usuario no existe");
             }
         }else {
-            logger.info("Usuario no existe");
+            session.removeAttribute("idusuario");
+            redirectAttributes.addFlashAttribute("mensaje", "revise su correo para terminar registro!")
+                    .addFlashAttribute("clase", "success");
+            return "redirect:/usuario/login";
         }
+
+
 
         return "redirect:/";
     }
