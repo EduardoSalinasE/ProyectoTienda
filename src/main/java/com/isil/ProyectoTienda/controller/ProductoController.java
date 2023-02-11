@@ -2,9 +2,7 @@ package com.isil.ProyectoTienda.controller;
 
 
 
-import com.isil.ProyectoTienda.model.Producto;
-import com.isil.ProyectoTienda.model.ReportesProductos;
-import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.model.*;
 import com.isil.ProyectoTienda.repository.ProveedorRepository;
 import com.isil.ProyectoTienda.service.*;
 import com.isil.ProyectoTienda.util.ProductosExporterPDF;
@@ -43,6 +41,9 @@ public class ProductoController {
     private ProveedorService proveedorService;
 
     @Autowired
+    private DetalleBoletasService detalleBoletasService;
+
+    @Autowired
     private UploadFileService upload;
     @Autowired
     private ProveedorRepository proveedorRepository;
@@ -60,22 +61,22 @@ public class ProductoController {
     }
 
     @GetMapping("/create")
-    public String create(Model model) {
+    public String create(Model model, Proveedor proveedor, DetalleBoletas detalleBoletas) {
 
         model.addAttribute("proveedores", proveedorService.findAll());
+        model.addAttribute("boletas", detalleBoletasService.findAll());
 
         return "productos/create";
     }
 
     @PostMapping("/save")
-    public String save(Producto producto, ReportesProductos reportes, @RequestParam("img") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+    public String save(Producto producto, DetalleBoletas detalleBoletas, ReportesProductos reportes, @RequestParam("img") MultipartFile file, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
         LOGGER.info("Este es el objeto producto {}",producto);
         Date fechaActual = new Date();
 
         Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
 
 
-        producto.setProveedor(producto.getProveedor());
         producto.setUsuario(u);
 
         reportes.setUsuario(u);
@@ -192,6 +193,7 @@ public class ProductoController {
         ProductosExporterPDF exporterPDF = new ProductosExporterPDF(reportesList);
         exporterPDF.exportar(response);
     }
+
 
 
 }

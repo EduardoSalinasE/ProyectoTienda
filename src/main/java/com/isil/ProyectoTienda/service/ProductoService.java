@@ -1,5 +1,6 @@
 package com.isil.ProyectoTienda.service;
 
+import com.isil.ProyectoTienda.model.DetalleBoletas;
 import com.isil.ProyectoTienda.model.Producto;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ProductoService {
     public void update(Producto producto);
     public void delete(Integer id);
     public List<Producto> findAll();
+
+
 }

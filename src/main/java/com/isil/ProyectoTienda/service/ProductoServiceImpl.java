@@ -1,5 +1,6 @@
 package com.isil.ProyectoTienda.service;
 
+import com.isil.ProyectoTienda.model.DetalleBoletas;
 import com.isil.ProyectoTienda.model.Producto;
 import com.isil.ProyectoTienda.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,6 @@ public class ProductoServiceImpl implements ProductoService{
     public List<Producto> findAll() {
         return productoRepository.findAll();
     }
+
+
 }

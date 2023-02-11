@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DetalleBoletasServiceImpl implements DetalleBoletasService {
@@ -21,5 +22,10 @@ public class DetalleBoletasServiceImpl implements DetalleBoletasService {
     @Override
     public List<DetalleBoletas> findAllByProveedor_id(Integer id) {
         return detalleBoletasRepository.findAllByProveedor_id(id);
+    }
+
+    @Override
+    public List<DetalleBoletas> findAll() {
+        return detalleBoletasRepository.findAll();
     }
 }

@@ -2,6 +2,8 @@ package com.isil.ProyectoTienda.controller;
 
 import com.isil.ProyectoTienda.model.*;
 import com.isil.ProyectoTienda.repository.DetalleBoletasRepository;
+import com.isil.ProyectoTienda.repository.ProductoRepository;
+import com.isil.ProyectoTienda.repository.ReporteProductosRepository;
 import com.isil.ProyectoTienda.service.*;
 import com.isil.ProyectoTienda.util.ProveedoresExporterPDF;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class ProveedorController {
     private DetalleBoletasService detalleBoletasService;
 
     @Autowired
+    private ReporteProductosService reporteProductosService;
+
+    @Autowired
     private ReporteProveedoresService reporteService;
 
     List<DetalleBoletas> detalleBol = new ArrayList<DetalleBoletas>();
@@ -45,6 +50,9 @@ public class ProveedorController {
     DetalleComprasProv detalleComprasProv = new DetalleComprasProv();
     @Autowired
     private DetalleBoletasRepository detalleBoletasRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @GetMapping("")
     public String show(Model model) {
@@ -152,24 +160,42 @@ public class ProveedorController {
     }
 
     @PostMapping("/crearBoleta")
-    public String addBoleta( @RequestParam Integer id, @RequestParam Integer cantidad, @RequestParam String nombreProducto, @RequestParam Integer total  ,RedirectAttributes redirectAttributes)
+    public String addBoleta(ReportesProductos reportes, @RequestParam Integer id, @RequestParam Integer cantidad, @RequestParam String nombreProducto, @RequestParam Integer total,@RequestParam String codigoBarras  ,RedirectAttributes redirectAttributes,HttpSession session)
     {
         DetalleBoletas detalleBoletas = new DetalleBoletas();
+        Producto producto1 = new Producto();
         Proveedor proveedor = new Proveedor();
+
+        Date fechaActual = new Date();
+
+        Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
 
         Optional<Proveedor> optionalProveedor = proveedorService.get(id);
         proveedor = optionalProveedor.get();
 
         detalleBoletas.setCantidad(cantidad);
         detalleBoletas.setNombreProducto(nombreProducto);
+        detalleBoletas.setCodigoBarras(codigoBarras);
         detalleBoletas.setTotal(total);
         detalleBoletas.setProveedor(proveedor);
+
+        producto1.setNombre(nombreProducto);
+        producto1.setProveedor(proveedor);
+        producto1.setCantidad(cantidad);
+        producto1.setImagen("null");
+
+        reportes.setUsuario(u);
+        reportes.setNombreProducto(nombreProducto);
+        reportes.setFechaCreacion(fechaActual);
+        reportes.setTipoOperacion("Creacion");
 
         double sumaTotal = 0;
         sumaTotal = detalleBol.stream().mapToDouble(dt -> dt.getTotal()).sum();
 
         detalleComprasProv.setPrecio(sumaTotal);
         detalleBoletasRepository.save(detalleBoletas);
+        productoRepository.save(producto1);
+        reporteProductosService.save(reportes);
 
         redirectAttributes.addFlashAttribute("mensaje", "Producto añadido!")
                 .addFlashAttribute("clase", "success");
