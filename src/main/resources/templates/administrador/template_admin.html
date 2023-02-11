@@ -24,7 +24,7 @@
 				<div class="site-header__start">
 					<nav class="nav">
 						<button class="nav__toggle" aria-expanded="false" type="button">
-							menu
+							Menu
 						</button>
 						<ul class="nav__wrapper">
 							<li class="nav__item"><a th:href="@{/administrador}">Home</a></li>
@@ -32,6 +32,7 @@
 							<li class="nav__item"><a th:href="@{/administrador/usuarios}">Usuarios</a></li>
 							<li class="nav__item"><a th:href="@{/administrador/ordenes}">Ordenes</a></li>
 							<li class="nav__item"><a th:href="@{/proveedor}">Proveedores</a></li>
+							<li class="nav__item"><a th:href="@{/administrador/reportes}">Reportes</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -45,7 +46,7 @@
 
 <!-- Footer -->
 <div th:fragment="footer">
-	<footer class="py-5 bg-dark">
+	<footer class="py-5 bg-dark" style="align-self: flex-end;">
 		<div class="container">
 			<p class="m-0 text-center text-white">Copyright &copy; Grupo Proyecto Tecnologico 2023</p>
 		</div>

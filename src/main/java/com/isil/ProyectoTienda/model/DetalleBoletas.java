@@ -14,6 +14,7 @@ public class DetalleBoletas {
     private Integer id;
 
     private String nombreProducto;
+    private String codigoBarras;
     private Integer cantidad;
     private float total;
 
@@ -21,9 +22,4 @@ public class DetalleBoletas {
     private Proveedor proveedor;
 
 
-    @Override
-    public String toString() {
-        return "DetalleBoletasService [id=" + id + ", nombreProducto=" + nombreProducto + ", cantidad=" + cantidad + ", total=" + total
-                + "]";
-    }
 }

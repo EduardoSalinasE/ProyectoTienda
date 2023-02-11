@@ -98,6 +98,7 @@
       <thead>
       <tr>
         <th scope="col">Nombre Producto</th>
+        <th scope="col">Codigo Barras</th>
         <th scope="col">cantidad</th>
         <th scope="col">total</th>
       </tr>
@@ -105,6 +106,7 @@
       <tbody>
       <tr th:each="proveedor:${listaBoletas}">
         <td th:text="${proveedor.nombreProducto}"></td>
+        <td th:text="${proveedor.codigoBarras}"></td>
         <td th:text="${proveedor.cantidad}"></td>
         <td th:text="${proveedor.total}"></td>
       </tr>
@@ -116,6 +118,8 @@
   <br>
   <!-- /.container -->
   <div th:include="administrador/template_admin.html::footer"></div>
+  <br>
+  <br>
 
   <!-- Bootstrap core JavaScript -->
 

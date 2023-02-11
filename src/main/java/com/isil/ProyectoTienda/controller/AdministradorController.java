@@ -63,6 +63,11 @@ public class AdministradorController {
         return "administrador/detalleorden";
     }
 
+    @GetMapping("/reportes")
+    public String create(Model model) {
+        return "reportes/reportes";
+    }
+
 
 
 }

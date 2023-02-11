@@ -1,14 +1,9 @@
 package com.isil.ProyectoTienda.controller;
 
-import com.isil.ProyectoTienda.model.DetalleBoletas;
-import com.isil.ProyectoTienda.model.DetalleComprasProv;
-import com.isil.ProyectoTienda.model.Proveedor;
-import com.isil.ProyectoTienda.model.Usuario;
+import com.isil.ProyectoTienda.model.*;
 import com.isil.ProyectoTienda.repository.DetalleBoletasRepository;
-import com.isil.ProyectoTienda.service.DetalleBoletasService;
-import com.isil.ProyectoTienda.service.DetalleComprasProvService;
-import com.isil.ProyectoTienda.service.ProveedorService;
-import com.isil.ProyectoTienda.service.UsuarioService;
+import com.isil.ProyectoTienda.service.*;
+import com.isil.ProyectoTienda.util.ProveedoresExporterPDF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +37,8 @@ public class ProveedorController {
     @Autowired
     private DetalleBoletasService detalleBoletasService;
 
-
+    @Autowired
+    private ReporteProveedoresService reporteService;
 
     List<DetalleBoletas> detalleBol = new ArrayList<DetalleBoletas>();
 
@@ -52,19 +52,32 @@ public class ProveedorController {
         return "proveedor/show";
     }
 
+    @GetMapping("/mostrarReporte")
+    public String showTable(Model model) {
+        model.addAttribute("reporte", reporteService.findAll());
+        return "reportes/reportes_proveedores";
+    }
+
     @GetMapping("create")
     public String create() {
         return "proveedor/create";
     }
 
     @PostMapping("/save")
-    public String save(Proveedor proveedor, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+    public String save(Proveedor proveedor, ReportesProveedores reportes, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
         LOGGER.info("Este es el objeto Proveedores {}",proveedor);
+        Date fechaActual = new Date();
 
         Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
         proveedor.setUsuario(usuario);
 
+        reportes.setUsuario(usuario);
+        reportes.setNombreProveedor(proveedor.getNombre());
+        reportes.setFechaCreacion(fechaActual);
+        reportes.setTipoOperacion("Creacion");
+
         proveedorService.save(proveedor);
+        reporteService.save(reportes);
         redirectAttributes.addFlashAttribute("mensaje", "Se añadió nueva compra del proveedor!")
                 .addFlashAttribute("clase", "success");
         return "redirect:/proveedor";
@@ -83,23 +96,42 @@ public class ProveedorController {
     }
 
     @PostMapping("/update")
-    public String update(Proveedor proveedor, RedirectAttributes redirectAttributes) throws IOException {
+    public String update(ReportesProveedores reportes, Proveedor proveedor, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
         Proveedor proveedor1 = new Proveedor();
         proveedor1 = proveedorService.get(proveedor.getId()).get();
 
+        Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
+        Date fechaActual = new Date();
+
         proveedor.setUsuario(proveedor1.getUsuario());
+        reportes.setUsuario(u);
+        reportes.setNombreProveedor(proveedor.getNombre());
+        reportes.setFechaCreacion(fechaActual);
+        reportes.setTipoOperacion("Actualizacion");
+
         proveedorService.update(proveedor);
+        reporteService.save(reportes);
         redirectAttributes.addFlashAttribute("mensaje", "Se hizo la actualización de la compra del proveedor!")
                 .addFlashAttribute("clase", "success");
         return "redirect:/proveedor";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+    public String delete(ReportesProveedores reportes, @PathVariable Integer id, HttpSession session, RedirectAttributes redirectAttributes) {
+
+        Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
+        Date fechaActual = new Date();
+
         Proveedor proveedor = new Proveedor();
         proveedor = proveedorService.get(id).get();
 
+        reportes.setUsuario(u);
+        reportes.setNombreProveedor(proveedor.getNombre());
+        reportes.setFechaCreacion(fechaActual);
+        reportes.setTipoOperacion("Eliminacion");
+
         proveedorService.delete(id);
+        reporteService.save(reportes);
         redirectAttributes.addFlashAttribute("mensaje", "Se eliminó la compra del proveedor!")
                 .addFlashAttribute("clase", "success");
         return "redirect:/proveedor";
@@ -145,6 +177,24 @@ public class ProveedorController {
 
         return "redirect:/proveedor/productos/" + id;
 
+    }
+
+    @GetMapping("/exportarPDF")
+    public void exportarListaProductos(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String fechaActual = dateFormat.format(new Date());
+
+        String cabecera = "Content-Disposition";
+        String valor = "attachment; filename=Proveedores_ " + fechaActual + ".pdf";
+
+        response.setHeader(cabecera, valor);
+
+        List<ReportesProveedores> reportes = reporteService.findAll();
+
+        ProveedoresExporterPDF exporterPDF = new ProveedoresExporterPDF(reportes);
+        exporterPDF.exportar(response);
     }
 
 
